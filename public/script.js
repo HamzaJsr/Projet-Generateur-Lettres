@@ -8,7 +8,6 @@ const adresse = document.getElementById("adresse");
 const postalCode = document.getElementById("postalCode");
 const commune = document.getElementById("commune");
 //Fin blocInfoMinimumDiv
-
 //blocDemission
 const blocDemissionDiv = document.getElementById("blocDemission");
 const employeurName = document.getElementById("employeurName");
@@ -21,7 +20,6 @@ const preavisTime = document.getElementById("preavisTime");
 const dateOfLettre = document.getElementById("dateOfLettre");
 const faitA = document.getElementById("faitA");
 // Fin blocDemission
-///////////////////////////
 // blocResiliation
 const blocResiliation = document.getElementById("blocResiliation");
 const operator = document.getElementById("operator");
@@ -31,7 +29,6 @@ const contractNumber = document.getElementById("contractNumber");
 const dateOfLettreResi = document.getElementById("dateOfLettreResi");
 const faitAResi = document.getElementById("faitAResi");
 // Fin blocResiliation
-//////////////////////////
 // Test Div Content pour tester l'affichage du resultat dans une div
 const testDivContent = document.getElementById("testDivContent");
 const loader = document.querySelector(".loader");
@@ -46,33 +43,20 @@ const inputsResiliationArray = document.querySelectorAll(
   "div.blocResiliation input"
 );
 
-console.log(inputsMinimumArray);
-console.log(inputsDemissionArray);
-console.log(inputsResiliationArray);
-
 function validateForm(inputsMinimumArray, secondInputsArray) {
-  let totalArray = Array.from(inputsMinimumArray).concat(
-    Array.from(secondInputsArray)
-  );
+  let totalArray = [...inputsMinimumArray, ...secondInputsArray];
   let valideInput = 0;
-  console.log(totalArray);
-  console.log(totalArray.length);
   for (let i = 0; i < totalArray.length; i++) {
-    console.log(totalArray[i].value);
     if (totalArray[i].value != "") {
       valideInput += 1;
-      console.log(valideInput);
     }
   }
-  console.log(valideInput);
   if (valideInput === totalArray.length) {
     return true;
   } else {
     return false;
   }
 }
-validateForm(inputsMinimumArray, inputsDemissionArray);
-
 // Partie ou on determine quel bloc vas apparaitre pour finir  de remplir le formulaire
 blocInfoMinimumDiv.addEventListener("change", () => {
   if (
@@ -92,94 +76,106 @@ blocInfoMinimumDiv.addEventListener("change", () => {
   }
 });
 //Fin du bloc precedent
-
 // Addevent listener sur le formulaire
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   let message;
+  let reponseLettre;
   const lettreSelectValue = select.value;
   let typeOfLettre = "";
   let secondInputsArray;
-  //blocInfoMinimumDiv
-  const nameValue = name.value.trim();
-  const adresseValue = adresse.value.trim();
-  const lastnameValue = lastname.value.trim();
-  const postalCodeValue = postalCode.value.trim();
-  const communeValue = commune.value;
-  //blocDemission
-  const employeurNameValue = employeurName.value;
-  const adresseWorkValue = adresseWork.value;
-  const postalCodeWorkValue = postalCodeWork.value;
-  const communeWorkValue = communeWork.value;
-  const occupedWorkValue = occupedWork.value;
-  const dateStartWorkValue = dateStartWork.value;
-  const preavisTimeValue = preavisTime.value;
-  const dateOfLettreValue = dateOfLettre.value;
-  const faitAValue = faitA.value;
-  // blocResiliation
-  const operatorValue = operator.value;
-  const dateOfContractValue = dateOfContract.value;
-  const phoneNumberValue = phoneNumber.value;
-  const contractNumberValue = contractNumber.value;
-  const dateOfLettreResiValue = dateOfLettreResi.value;
-  const faitAResiValue = faitAResi.value;
 
+  const formData = {
+    mainInput: {
+      typeOfLettre:
+        lettreSelectValue === "1"
+          ? "lettre de démission"
+          : "lettre de résiliation d'operateur telephonique",
+      name: name.value.trim(),
+      lastname: lastname.value.trim(),
+      adresse: adresse.value.trim(),
+      postalCode: postalCode.value.trim(),
+      commune: commune.value,
+    },
+    workInput: {
+      employeurName: employeurName.value,
+      adresseWork: adresseWork.value,
+      postalCodeWork: postalCodeWork.value,
+      communeWork: communeWork.value,
+      occupedWork: occupedWork.value,
+      dateStartWork: dateStartWork.value,
+      preavisTime: preavisTime.value,
+      dateOfLettre: dateOfLettre.value,
+      faitA: faitA.value,
+    },
+    operatorInput: {
+      operator: operator.value,
+      dateOfContract: dateOfContract.value,
+      phoneNumber: phoneNumber.value,
+      contractNumber: contractNumber.value,
+      dateOfLettreResi: dateOfLettreResi.value,
+      faitAResi: faitAResi.value,
+    },
+  };
   if (lettreSelectValue === "1") {
     secondInputsArray = inputsDemissionArray;
-    typeOfLettre = "lettre de démission";
-    message = `Ecris moi une ${typeOfLettre} avec mes informations personelle : 
-    mon prenom c'est ${nameValue}, 
-    mon nom de famille c'est ${lastnameValue}, 
-    mon adresse c'est ${adresseValue} et code postal c'est : ${postalCodeValue},
-    la commune est : ${communeValue},
-    la societé où je travail s'appelle : ${employeurNameValue},
-    elle est situé a l'adresse suivante: ${adresseWorkValue},
-    le code postale c'est ${postalCodeWorkValue},
-    la commune de la societe est ${communeWorkValue},
-    dans cette societé j'occupe le poste de ${occupedWorkValue},
-    j'ai commencé dans cette societé a la date du ${dateStartWorkValue},
-    la periode de preavis est de ${preavisTimeValue},
-    la date de cette lettre de demission est du ${dateOfLettreValue},
-    elle est faite à ${faitAValue}`;
+    if (validateForm(inputsMinimumArray, secondInputsArray)) {
+      const dataWork = {
+        ...formData.mainInput,
+        ...formData.workInput,
+      };
+      try {
+        loader.style.display = "block";
+        const response = await fetch("api/messageWork", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataWork), // Convertir l'objet formData en JSON
+        });
+        if (response.ok) {
+          loader.style.display = "none";
+          const data = await response.json();
+          testDivContent.innerText = data;
+        } else {
+          testDivContent.innerText = "Une erreur c'est produite";
+        }
+      } catch (error) {
+        console.error(
+          "Une erreur s'est produite lors de l'envoi de la requête",
+          error
+        );
+      }
+    }
   } else if (lettreSelectValue === "2") {
     secondInputsArray = inputsResiliationArray;
-    typeOfLettre = "lettre de résiliation d'operateur telephonique";
-    message = `Ecris moi une ${typeOfLettre} avec mes informations personelle : 
-  mon prenom c'est ${nameValue}, 
-  mon nom de famille c'est ${lastnameValue}, 
-  mon adresse c'est ${adresseValue} et code postal c'est : ${postalCodeValue},
-  la commune est : ${communeValue}, et voici les information sur mon operateur telephonique:
-  Nom de l'operateur telephonique c'est ${operatorValue}, mon contrat date du ${dateOfContractValue},
-  mon numero de telephone est le ${phoneNumberValue}, mon numero de contrat est le ${contractNumberValue}, 
-  la date de cette lettre de resiliation d'operateur telephonique est le ${dateOfLettreResiValue},
-  et elle est faite à ${faitAResiValue} `;
-  }
-
-  console.log(message);
-
-  if (validateForm(inputsMinimumArray, secondInputsArray)) {
-    try {
-      loader.style.display = "block";
-      const response = await fetch("api/data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-      console.log(response);
-      if (response.ok) {
-        const data = await response.json();
-        loader.style.display = "none";
-        console.log(data);
-        console.log(data.choices[0].message.content);
-        testDivContent.innerText = data.choices[0].message.content;
-      } else {
-        testDivContent.innerText = "Une erreur c'est produite";
+    if (validateForm(inputsMinimumArray, secondInputsArray)) {
+      const dataWork = {
+        ...formData.mainInput,
+        ...formData.operatorInput,
+      };
+      try {
+        loader.style.display = "block";
+        const response = await fetch("api/messageOperator", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataWork), // Convertir l'objet formData en JSON
+        });
+        if (response.ok) {
+          loader.style.display = "none";
+          const data = await response.json();
+          testDivContent.innerText = data;
+        } else {
+          testDivContent.innerText = "Une erreur c'est produite";
+        }
+      } catch (error) {
+        console.error(
+          "Une erreur s'est produite lors de l'envoi de la requête",
+          error
+        );
       }
-    } catch (error) {
-      console.error("Probleme rencontrer");
-      testDivContent.innerText = "Une erreur c'est produite";
     }
   }
 });
