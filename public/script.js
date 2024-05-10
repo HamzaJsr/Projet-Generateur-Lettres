@@ -1,4 +1,3 @@
-const API_KEY = process.env.API_KEY;
 const form = document.getElementById("form");
 //blocInfoMinimumDiv
 const blocInfoMinimumDiv = document.getElementById("blocInfoMinimum");
@@ -161,34 +160,13 @@ form.addEventListener("submit", async (event) => {
   if (validateForm(inputsMinimumArray, secondInputsArray)) {
     try {
       loader.style.display = "block";
-      const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
-        //Ce deuxième argument accepte un objet. fetch(url,{object})
-        //Nous devons renseigner trois propriétés 1°method 2° headers 3° body dans cet objet pour configurer les trois nouvelles informations.
-        {
-          method: "POST", // method: "Sting"
-          //headers: {Object JSON format}
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_KEY}`,
-          },
-          //body: JSON Format et pour une requette ChatGPT il faut la propriete message qui contient un tableau contenant un objet avec role et content {"message": []}
-          body: JSON.stringify({
-            model: "gpt-3.5-turbo",
-            messages: [
-              {
-                role: "user",
-                content: message,
-              },
-            ],
-            temperature: 1.0,
-            n: 1,
-            stream: false,
-            presence_penalty: 0,
-            frequency_penalty: 0,
-          }),
-        }
-      );
+      const response = await fetch("api/data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
       console.log(response);
       if (response.ok) {
         const data = await response.json();
