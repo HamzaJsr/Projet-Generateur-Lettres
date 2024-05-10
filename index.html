@@ -1,0 +1,132 @@
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+    <title>Ma lettre</title>
+  </head>
+  <body>
+    <nav>
+      <img
+        class="logo_img"
+        src="images/logo.png"
+        alt=""
+        width="60px"
+        height="40px"
+      />
+
+      <ul class="nav_bar">
+        <li>Accueil</li>
+        <li>Contact</li>
+      </ul>
+    </nav>
+    <h1>Ma lettre auto</h1>
+    <div class="main_section">
+      <div class="form_div">
+        <form id="form" action="" method="">
+          <div class="blocInfoMinimum" id="blocInfoMinimum">
+            <div class="select">
+              <select name="typeOfLettre" id="lettre">
+                <option value="1">Lettre de demission</option>
+                <option value="2">Lettre de resiliation</option>
+              </select>
+            </div>
+            <label for="lastname">Nom</label><br />
+            <input id="lastname" type="text" name="lastname" required />
+            <br />
+            <label for="name">Prenom</label><br />
+            <input id="name" type="text" name="name" required /><br />
+            <label for="adresse">Adresse</label><br />
+            <input id="adresse" type="text" name="adresse" required />
+            <br />
+            <label for="postalCode">Code Postal</label><br />
+            <input id="postalCode" type="text" name="postalCode" required />
+            <br />
+            <label for="commune">Commune</label><br />
+            <input id="commune" type="text" name="commune" />
+          </div>
+          <div class="blocDemission" id="blocDemission" style="display: none">
+            <label for="employeurName">Nom de votre employeur</label><br />
+            <input id="employeurName" type="text" name="employeurName" /><br />
+            <label for="adresseWork">Adresse de votre employeur</label><br />
+            <input id="adresseWork" type="text" name="adresseWork" />
+            <br />
+            <label for="postalCodeWork">Code Postal</label><br />
+            <input id="postalCodeWork" type="text" name="postalCodeWork" />
+            <br />
+            <label for="communeWork">Commune</label><br />
+            <input id="communeWork" type="text" name="communeWork" />
+            <br />
+            <label for="occupedWork">Fonction occupée</label><br />
+            <input id="occupedWork" type="text" name="occupedWork" />
+            <br />
+            <label for="dateStartWork">Date du début du contrat</label><br />
+            <input id="dateStartWork" type="date" name="dateStartWork" />
+            <br />
+            <label for="preavisTime">Durée du préavis</label><br />
+            <input id="preavisTime" type="text" name="preavisTime" />
+            <br />
+            <label for="dateOfLettre">Date de la lettre</label><br />
+            <input id="dateOfLettre" type="date" name="dateOfLettre" />
+            <br />
+            <label for="faitA">Fait à</label><br />
+            <input id="faitA" type="text" name="faitA" />
+          </div>
+          <!-- Bloc div resiliation operateur -->
+          <div
+            class="blocResiliation"
+            id="blocResiliation"
+            style="display: none"
+          >
+            <label for="operator">Operateur</label><br />
+            <input id="operator" type="text" name="operator" /><br />
+            <label for="dateOfContract">Date de début du contrat</label><br />
+            <input
+              id="dateOfContract"
+              type="date"
+              name="dateOfContract"
+            /><br />
+            <label for="phoneNumber">Numéro de téléphone</label><br />
+            <input id="phoneNumber" type="text" name="phoneNumber" /><br />
+            <label for="contractNumber">Numéro client</label><br />
+            <input
+              id="contractNumber"
+              type="text"
+              name="contractNumber"
+            /><br />
+            <label for="dateOfLettreResi">Date de la lettre</label><br />
+            <input id="dateOfLettreResi" type="date" name="dateOfLettreResi" />
+            <br />
+            <label for="faitAResi">Fait à</label><br />
+            <input id="faitAResi" type="text" name="faitAResi" />
+          </div>
+
+          <button class="btnSubmit" type="submit">Valider !</button>
+        </form>
+        <p>Votre lettre</p>
+        <!-- Test de loader -->
+        <div class="loader" style="display: none">
+          <div class="pencil">
+            <p>Chargement...</p>
+            <div class="top"></div>
+          </div>
+          <div class="stroke"></div>
+        </div>
+        <!-- Fin de test de loader -->
+      </div>
+
+      <div class="testDivContent" id="testDivContent"></div>
+    </div>
+  </body>
+</html>
