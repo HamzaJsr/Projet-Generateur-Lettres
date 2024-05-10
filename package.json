@@ -2,6 +2,7 @@
   "name": "projet_generateur_lettres",
   "version": "1.0.0",
   "description": "Generateur de lettres ",
+  "type": "module",
   "main": "script.js",
   "scripts": {
     "start": "node script.js"
