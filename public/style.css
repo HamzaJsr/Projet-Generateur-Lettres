@@ -249,3 +249,7 @@ button:hover {
 .getPdfbutton {
   margin: 10px;
 }
+
+.infoLettre {
+  font-size: 10px;
+}
