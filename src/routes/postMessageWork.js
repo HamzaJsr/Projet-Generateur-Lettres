@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 const API_KEY = process.env.API_KEY;
+
 export default (server) => {
   server.post("/api/messageWork", async (req, res) => {
     try {

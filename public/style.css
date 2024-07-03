@@ -215,6 +215,11 @@ button {
   font-size: 17px;
   padding: 0.6em 1.5em;
 }
+#pdfDivButton {
+  text-align: center;
+  font-family: "Outfit", sans-serif;
+  margin: 10px;
+}
 
 button:hover {
   background-position: right center;
@@ -235,4 +240,12 @@ button:hover {
   100% {
     box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
   }
+}
+
+.testDivContent {
+  font-family: "Outfit", sans-serif;
+}
+
+.getPdfbutton {
+  margin: 10px;
 }

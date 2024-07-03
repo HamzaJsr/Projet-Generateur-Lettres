@@ -1,4 +1,8 @@
+import jsPDF from "jspdf";
+
 const form = document.getElementById("form");
+const pdfDivButton = document.getElementById("pdfDivButton");
+const getPdfButton = document.createElement("button");
 //blocInfoMinimumDiv
 const blocInfoMinimumDiv = document.getElementById("blocInfoMinimum");
 const select = document.getElementById("lettre");
@@ -135,8 +139,60 @@ form.addEventListener("submit", async (event) => {
         });
         if (response.ok) {
           loader.style.display = "none";
-          const data = await response.json();
-          testDivContent.innerText = data;
+          const dataWork2 = await response.json();
+
+          getPdfButton.innerText = "PDF";
+          testDivContent.innerText = dataWork2;
+          getPdfButton.classList.add("getPdfbutton");
+          pdfDivButton.appendChild(getPdfButton);
+
+          pdfDivButton.scrollIntoView({ behavior: "smooth", block: "end" });
+
+          const createPDF = () => {
+            const doc = new jsPDF();
+
+            // Récupère le texte de la variable data
+            const text = dataWork2;
+
+            // Définir la position initiale du texte
+            let x = 10;
+            let y = 20;
+
+            // Définir la taille de la police et la hauteur de ligne
+            const fontSize = 10;
+            const lineHeight = 0.5;
+
+            // Définir les marges
+            const margin = 10;
+            const pageWidth = doc.internal.pageSize.width;
+            const pageHeight = doc.internal.pageSize.height;
+
+            // Définir la police
+            doc.setFontSize(fontSize);
+
+            // Fonction pour diviser le texte en lignes
+            const splitTextIntoLines = (text, maxWidth) => {
+              const lines = doc.splitTextToSize(text, maxWidth);
+              return lines;
+            };
+
+            // Diviser le texte en lignes
+            const textLines = splitTextIntoLines(text, pageWidth - 2 * margin);
+
+            textLines.forEach((line) => {
+              if (y + fontSize * lineHeight > pageHeight - margin) {
+                doc.addPage();
+                y = margin;
+              }
+              doc.text(line, x, y);
+              y += fontSize * lineHeight;
+            });
+
+            // Télécharger le PDF
+            doc.save("Ma_Lettre_Demission.pdf");
+          };
+
+          getPdfButton.addEventListener("click", createPDF);
         } else {
           testDivContent.innerText = "Une erreur c'est produite";
         }
@@ -163,10 +219,62 @@ form.addEventListener("submit", async (event) => {
           },
           body: JSON.stringify(dataWork), // Convertir l'objet formData en JSON
         });
+
+        loader.style.display = "none";
+
         if (response.ok) {
-          loader.style.display = "none";
           const data = await response.json();
           testDivContent.innerText = data;
+          getPdfButton.classList.add("getPdfbutton");
+          pdfDivButton.appendChild(getPdfButton);
+
+          pdfDivButton.scrollIntoView({ behavior: "smooth", block: "end" });
+
+          const createPDF = () => {
+            const doc = new jsPDF();
+
+            // Récupère le texte de la variable data
+            const text = data;
+
+            // Définir la position initiale du texte
+            let x = 10;
+            let y = 20;
+
+            // Définir la taille de la police et la hauteur de ligne
+            const fontSize = 10;
+            const lineHeight = 0.5;
+
+            // Définir les marges
+            const margin = 10;
+            const pageWidth = doc.internal.pageSize.width;
+            const pageHeight = doc.internal.pageSize.height;
+
+            // Définir la police
+            doc.setFontSize(fontSize);
+
+            // Fonction pour diviser le texte en lignes
+            const splitTextIntoLines = (text, maxWidth) => {
+              const lines = doc.splitTextToSize(text, maxWidth);
+              return lines;
+            };
+
+            // Diviser le texte en lignes
+            const textLines = splitTextIntoLines(text, pageWidth - 2 * margin);
+
+            textLines.forEach((line) => {
+              if (y + fontSize * lineHeight > pageHeight - margin) {
+                doc.addPage();
+                y = margin;
+              }
+              doc.text(line, x, y);
+              y += fontSize * lineHeight;
+            });
+
+            // Télécharger le PDF
+            doc.save("Ma_Lettre_Resiliation.pdf");
+          };
+
+          getPdfButton.addEventListener("click", createPDF);
         } else {
           testDivContent.innerText = "Une erreur c'est produite";
         }
