@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
 const API_KEY = process.env.API_KEY;
-
 export default (server) => {
   server.post("/api/messageWork", async (req, res) => {
     try {
@@ -34,7 +33,7 @@ export default (server) => {
             J'ai commencé dans cette société à la date du ${dateStartWork},
             La période de préavis est de ${preavisTime},
             La date de cette lettre est du ${dateOfLettre},
-            Elle est faite à ${faitA}`;
+            Elle est faite à ${faitA}. Et remplis tout les champs aucun ne doit etre vide et ne fais pas de commentaire dans la lettre`;
 
       const response = await fetch(
         "https://api.openai.com/v1/chat/completions",
@@ -49,7 +48,7 @@ export default (server) => {
           },
           //body: JSON Format et pour une requette ChatGPT il faut la propriete message qui contient un tableau contenant un objet avec role et content {"message": []}
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4o",
             messages: [
               {
                 role: "user",

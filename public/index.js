@@ -1,8 +1,10 @@
 import jsPDF from "jspdf";
 
 const form = document.getElementById("form");
+const btnSubmit = document.getElementById("btnSubmit");
 const pdfDivButton = document.getElementById("pdfDivButton");
 const getPdfButton = document.createElement("button");
+const pInfoLettre = document.getElementById("infoLettre");
 //blocInfoMinimumDiv
 const blocInfoMinimumDiv = document.getElementById("blocInfoMinimum");
 const select = document.getElementById("lettre");
@@ -35,7 +37,6 @@ const faitAResi = document.getElementById("faitAResi");
 // Fin blocResiliation
 // Test Div Content pour tester l'affichage du resultat dans une div
 const testDivContent = document.getElementById("testDivContent");
-const loader = document.querySelector(".loader");
 // Tentative de boucle sur les inputs pour gerer la validation comme quoi tout les inputs sont remplis
 const inputsMinimumArray = document.querySelectorAll(
   "div.blocInfoMinimum input"
@@ -129,7 +130,7 @@ form.addEventListener("submit", async (event) => {
         ...formData.workInput,
       };
       try {
-        loader.style.display = "block";
+        btnSubmit.classList.add("loading");
         const response = await fetch("api/messageWork", {
           method: "POST",
           headers: {
@@ -138,15 +139,20 @@ form.addEventListener("submit", async (event) => {
           body: JSON.stringify(dataWork), // Convertir l'objet formData en JSON
         });
         if (response.ok) {
-          loader.style.display = "none";
+          btnSubmit.classList.remove("loading");
           const dataWork2 = await response.json();
 
           getPdfButton.innerText = "PDF";
           testDivContent.innerText = dataWork2;
           getPdfButton.classList.add("getPdfbutton");
           pdfDivButton.appendChild(getPdfButton);
+          pInfoLettre.innerText =
+            "Pour régénérer une lettre recliquer sur valider";
 
-          pdfDivButton.scrollIntoView({ behavior: "smooth", block: "end" });
+          // Use a setTimeout to scroll after the DOM has updated
+          setTimeout(() => {
+            pdfDivButton.scrollIntoView({ behavior: "smooth", block: "end" });
+          }, 100);
 
           const createPDF = () => {
             const doc = new jsPDF();
@@ -211,7 +217,7 @@ form.addEventListener("submit", async (event) => {
         ...formData.operatorInput,
       };
       try {
-        loader.style.display = "block";
+        btnSubmit.classList.add("loading");
         const response = await fetch("api/messageOperator", {
           method: "POST",
           headers: {
@@ -220,15 +226,20 @@ form.addEventListener("submit", async (event) => {
           body: JSON.stringify(dataWork), // Convertir l'objet formData en JSON
         });
 
-        loader.style.display = "none";
-
         if (response.ok) {
+          btnSubmit.classList.remove("loading");
           const data = await response.json();
+          getPdfButton.innerText = "PDF";
           testDivContent.innerText = data;
           getPdfButton.classList.add("getPdfbutton");
           pdfDivButton.appendChild(getPdfButton);
+          pInfoLettre.innerText =
+            "Pour régénérer une lettre recliquer sur valider";
 
-          pdfDivButton.scrollIntoView({ behavior: "smooth", block: "end" });
+          // Use a setTimeout to scroll after the DOM has updated
+          setTimeout(() => {
+            pdfDivButton.scrollIntoView({ behavior: "smooth", block: "end" });
+          }, 100);
 
           const createPDF = () => {
             const doc = new jsPDF();

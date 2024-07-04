@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
 const API_KEY = process.env.API_KEY;
-
 export default (server) => {
   server.post("/api/messageOperator", async (req, res) => {
     try {
@@ -26,7 +25,7 @@ export default (server) => {
       Nom de l'operateur telephonique c'est ${operator}, mon contrat date du ${dateOfContract},
       mon numero de telephone est le ${phoneNumber}, mon numero de contrat est le ${contractNumber}, 
       la date de cette lettre de resiliation d'operateur telephonique est le ${dateOfLettreResi},
-      et elle est faite à ${faitAResi} `;
+      et elle est faite à ${faitAResi}. Et remplis tout les champs aucun ne doit etre vide et ne fais pas de commentaire dans la lettre`;
 
       // res.json({ messageServer });
       const response = await fetch(
@@ -42,7 +41,7 @@ export default (server) => {
           },
           //body: JSON Format et pour une requette ChatGPT il faut la propriete message qui contient un tableau contenant un objet avec role et content {"message": []}
           body: JSON.stringify({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4o",
             messages: [
               {
                 role: "user",

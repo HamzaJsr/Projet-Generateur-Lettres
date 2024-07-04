@@ -121,83 +121,6 @@ input[type="text"]:focus {
   width: 280px;
 }
 
-/* Pencil Loader */
-.loader {
-  position: absolute;
-  width: 200;
-  left: 40%;
-  top: 50%;
-  animation: animate 8s linear infinite;
-}
-.pencil {
-  width: 150px;
-  background: #ffc334;
-  border-top: 10px solid #ffd268;
-  border-bottom: 10px solid #e3af38;
-}
-.pencil p {
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  font-size: 12px;
-  line-height: 15px;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #d09200;
-}
-
-.pencil:before {
-  content: "";
-  position: absolute;
-  left: -80px;
-  top: 0;
-  border-style: solid;
-  border-color: transparent #e29663 transparent transparent;
-  border-width: 17px 40px 18px;
-}
-
-.pencil:after {
-  content: "";
-  position: absolute;
-  left: -80px;
-  top: -0.4px;
-  border-style: solid;
-  border-color: transparent #262626 transparent transparent;
-  border-width: 17px 40px 18px;
-  transform: scale(0.2);
-}
-.top {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 15px;
-  width: 50px;
-  background: #ccc;
-  border-top: 10px solid #dedede;
-  border-bottom: 10px solid #b9bfbf;
-}
-
-.top:before {
-  content: "";
-  position: absolute;
-  top: -10;
-  right: -10%;
-  width: 80%;
-  height: 100%;
-  background: #d76f6e;
-  border-top: 10px solid #da8e8d;
-  border-bottom: 10px solid #c85957;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  z-index: 2;
-}
-
-@keyframes animate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 select {
   width: 250px;
   height: 25px;
@@ -214,7 +137,11 @@ button {
   font-family: inherit;
   font-size: 17px;
   padding: 0.6em 1.5em;
+  cursor: pointer;
+  transition: padding-right 0.3s ease-out;
+  position: relative;
 }
+
 #pdfDivButton {
   text-align: center;
   font-family: "Outfit", sans-serif;
@@ -252,4 +179,39 @@ button:hover {
 
 .infoLettre {
   font-size: 10px;
+}
+
+/* Test bouton spinner */
+
+.btnSubmit.loading {
+  background-color: #ccc;
+  padding-right: 40px;
+}
+
+.btnSubmit.loading:after {
+  content: "";
+  position: absolute;
+  border-radius: 100%;
+  right: 6px;
+  top: 50%;
+  width: 0px;
+  height: 0px;
+  margin-top: -2px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-left-color: #fff;
+  border-top-color: #fff;
+  animation: spin 0.6s infinite ease-out, grow 0.3s forwards linear;
+}
+@keyframes spin {
+  to {
+    transform: rotate(359deg);
+  }
+}
+@keyframes grow {
+  to {
+    width: 14px;
+    height: 14px;
+    margin-top: -8px;
+    right: 13px;
+  }
 }
